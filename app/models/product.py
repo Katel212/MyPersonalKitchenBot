@@ -1,3 +1,5 @@
+from sqlalchemy.sql import Select
+
 from app.misc import db
 from app.models.user import UserRelatedModel
 
@@ -10,3 +12,4 @@ class Product(UserRelatedModel):
     expiration_date = db.Column(db.Date)
     bought_date = db.Column(db.Date)
     info = db.Column(db.String)
+    query: Select
