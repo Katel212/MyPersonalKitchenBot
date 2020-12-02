@@ -12,7 +12,6 @@ from app.models import Product
 
 @dp.callback_query_handler(filters.Regexp(r'(previous_page|next_page)_(fridge|shopping_list|recipe)_(\d*)'))
 async def page_callback_handler(query: types.CallbackQuery):
-    products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
     groups = re.match(r'(previous_page|next_page)_(fridge|shopping_list|recipe)_(\d*)', query.data).groups()
     new_page = 0
     if groups[0] == 'previous_page':
@@ -25,10 +24,15 @@ async def page_callback_handler(query: types.CallbackQuery):
     logger.info(f"Next page: {new_page}")
 
     keyboard = None
-    if source == 'fridge' or source == 'shopping_list':
+    products = None
+    if source == 'fridge':
+        products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
+        keyboard = ProductListKeyboard.create(products, new_page, source)
+    elif source == 'shopping_list':
+        # TODO products=
         keyboard = ProductListKeyboard.create(products, new_page, source)
     elif source == 'recipe':
+        products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
         keyboard = RecipeProductListKeyboard.create(products, new_page, source)
-
     await bot.edit_message_reply_markup(query.message.chat.id, query.message.message_id, reply_markup=keyboard)
     await query.answer()

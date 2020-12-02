@@ -1,7 +1,7 @@
 from aiogram import types
 
 from app.keyboards.inline.product_list_keyboard import ProductListKeyboard
-from app.misc import dp, db
+from app.misc import dp, db, bot
 from app.models import Product
 
 
