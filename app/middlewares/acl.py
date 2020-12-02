@@ -3,7 +3,7 @@ from typing import Optional
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
-from app.models import User
+from app.models import User, ShoppingList
 from app.models import Chat
 
 
@@ -25,6 +25,9 @@ class ACLMiddleware(BaseMiddleware):
                                      last_name=last_name,
                                      username=username,
                                      language=language)
+            await ShoppingList.create(
+                user_id=user.id
+            )
         chat = await Chat.get(chat_id)
         if chat is None:
             chat = await Chat.create(id=chat_id, type=chat_type)
