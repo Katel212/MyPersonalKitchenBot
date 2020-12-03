@@ -27,6 +27,12 @@ async def page_callback_handler(query: types.CallbackQuery):
     products = None
     if source == 'fridge':
         products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
+        shopping_list_product_connections = await ShoppingList \
+            .join(ShoppingListToProduct, ShoppingListToProduct.shopping_list_id == ShoppingList.id) \
+            .select(ShoppingList.user_id == query.from_user.id) \
+            .gino.all()
+        shopping_list_product_ids = [data[3] for data in shopping_list_product_connections]
+        products = list(filter(lambda item: item.id not in shopping_list_product_ids, products))
         keyboard = ProductListKeyboard.create(products, new_page, source)
     elif source == 'shopping_list':
         products_with_trash = await User \

@@ -1,2 +1,3 @@
-from .button_next_page import page_callback_handler
+from .button_change_page import page_callback_handler
 from .add_button import add_to_callback_handler
+from .product_button import handler_product_button
