@@ -7,7 +7,7 @@ from loguru import logger
 from app.keyboards.inline.product_list_keyboard import ProductListKeyboard
 from app.keyboards.inline.recipe_product_list_keyboard import RecipeProductListKeyboard
 from app.misc import dp, bot
-from app.models import Product
+from app.models import Product, ShoppingList, ShoppingListToProduct, User
 
 
 @dp.callback_query_handler(filters.Regexp(r'(previous_page|next_page)_(fridge|shopping_list|recipe)_(\d*)'))
@@ -29,7 +29,13 @@ async def page_callback_handler(query: types.CallbackQuery):
         products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
         keyboard = ProductListKeyboard.create(products, new_page, source)
     elif source == 'shopping_list':
-        # TODO products=
+        products_with_trash = await User \
+            .join(ShoppingList) \
+            .join(ShoppingListToProduct, ShoppingListToProduct.shopping_list_id == ShoppingList.id) \
+            .join(Product, Product.id == ShoppingListToProduct.product_id) \
+            .select(User.id == query.from_user.id) \
+            .gino.all()
+        products = [Product.create_product(*list(item)[12:]) for item in products_with_trash]
         keyboard = ProductListKeyboard.create(products, new_page, source)
     elif source == 'recipe':
         products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()

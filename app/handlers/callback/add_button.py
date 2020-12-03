@@ -18,4 +18,5 @@ async def add_to_callback_handler(query: types.CallbackQuery):
     elif source == 'shopping_list':
         await ShopListProductState.name.set()
 
-    await bot.send_message(query.message.chat.id, "Напишите название продукта")
+    await bot.send_message(query.message.chat.id, "Введите название продукта")
+    await query.answer()

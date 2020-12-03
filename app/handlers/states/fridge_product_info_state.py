@@ -12,4 +12,6 @@ async def handler_fridge_product_info_state(msg: Message, state: FSMContext):
         data['info'] = msg.text
         new_product = await Product.create(user_id=msg.from_user.id, name=data['name'], expiration_date=data['expiration_date'],
                                            bought_date=data['bought_date'], info=data['info'])
+        await msg.answer("Продукт успешно добавлен в ваш холодильник!")
+
     await state.finish()
