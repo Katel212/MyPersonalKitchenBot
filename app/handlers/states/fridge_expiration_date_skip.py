@@ -14,5 +14,5 @@ async def handler_fridge_skip_exp_date_state(msg: Message, state: FSMContext):
     async with state.proxy() as data:
         data['expiration_date'] = None
     await FridgeProductState.next()
-    await msg.answer('Введите дату покупки продукта ("дд.мм.гггг",пропустить - /skip)')
+    await msg.answer('Введите дату покупки продукта ("дд.мм.гггг", пропустить - /skip)')
 
