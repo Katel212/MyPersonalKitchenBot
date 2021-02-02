@@ -18,10 +18,10 @@ async def handler_change_bought_date_state(msg: Message, state: FSMContext):
         await msg.answer('Такой даты не существует!\nВведите корректную дату покупки в формате "дд.мм.гггг"')
         return
     async with state.proxy() as data:
-        date_format = '%d.%m.%Y'
         data['bought_date'] = msg.text
+    date_format = '%d.%m.%Y'
     bought_dat = datetime.strptime(data['bought_date'], date_format)
     product = await Product.query.where(Product.id == int(ChangeProductState.id)).gino.first()
-    await product.update(bought_date = bought_dat).apply()
+    await product.update(bought_date=bought_dat).apply()
     await state.finish()
     await msg.answer('Дата покупки успешно изменена!')

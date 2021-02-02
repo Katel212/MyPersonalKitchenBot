@@ -18,8 +18,8 @@ async def handler_change_expiration_date_state(msg: Message, state: FSMContext):
         await msg.answer('Такой даты не существует!\nВведите корректную дату срока годности в формате "дд.мм.гггг"')
         return
     async with state.proxy() as data:
-        date_format = '%d.%m.%Y'
         data['expiration_date'] = msg.text
+    date_format = '%d.%m.%Y' 
     exp_date = datetime.strptime(data['expiration_date'], date_format)
     product = await Product.query.where(Product.id == int(ChangeProductState.id)).gino.first()
     await product.update(expiration_date = exp_date).apply()
