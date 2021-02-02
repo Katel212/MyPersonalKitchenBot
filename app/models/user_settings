@@ -15,3 +15,5 @@ class UserSettings(UserRelatedModel):
     notifications_weekly_enabled = db.Column(db.Bool)
     notifications_weekly_day = db.Column(db.Integer)
     query: Select
+
+
