@@ -16,8 +16,14 @@ async def handler_fridge_skip_info_state(msg: Message, state: FSMContext):
     async with state.proxy() as data:
         data['info'] = None
         date_format = '%d.%m.%Y'
-        exp_date = datetime.strptime(data['expiration_date'], date_format)
-        bought_date = datetime.strptime(data['bought_date'], date_format)
+        if not data['expiration_date']:
+            exp_date = None
+        else:
+            exp_date = datetime.strptime(data['expiration_date'], date_format)
+        if not data['bought_date']:
+            bought_date = None
+        else:
+            bought_date = datetime.strptime(data['bought_date'], date_format)
         new_product = await Product.create(user_id=msg.from_user.id, name=data['name'], expiration_date=exp_date,
                                            bought_date=bought_date, info=data['info'])
         await msg.answer("Продукт успешно добавлен в ваш холодильник!")
