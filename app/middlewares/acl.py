@@ -29,7 +29,7 @@ class ACLMiddleware(BaseMiddleware):
                 user_id=user.id
             )
             await UserSettings.create(user_id=user.id,
-                                      tifications_general_enabled=False,
+                                      notifications_general_enabled=False,
                                       notifications_advance_enabled=False,
                                       notifications_advance_days_until_expiration=None,
                                       notifications_periodical_frequency=None,
