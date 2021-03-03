@@ -5,3 +5,6 @@ from .edit_product import change_name_callback_handler, \
     change_expiration_date_callback_handler, \
     change_bought_time_callback_handler, \
     change_info_callback_handler
+from .delete_product import delete_confirm_callback_handler, \
+    delete_yes_callback_handler, \
+    delete_no_callback_handler
