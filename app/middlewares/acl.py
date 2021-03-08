@@ -3,7 +3,7 @@ from typing import Optional
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
-from app.models import User, ShoppingList
+from app.models import User, ShoppingList, UserSettings
 from app.models import Chat
 
 
@@ -28,6 +28,13 @@ class ACLMiddleware(BaseMiddleware):
             await ShoppingList.create(
                 user_id=user.id
             )
+            await UserSettings.create(user_id=user.id,
+                                      notifications_general_enabled=False,
+                                      notifications_advance_enabled=False,
+                                      notifications_advance_days_until_expiration=None,
+                                      notifications_periodical_frequency=None,
+                                      notifications_weekly_enabled=False,
+                                      notifications_weekly_day=None)
         chat = await Chat.get(chat_id)
         if chat is None:
             chat = await Chat.create(id=chat_id, type=chat_type)
@@ -40,3 +47,4 @@ class ACLMiddleware(BaseMiddleware):
 
     async def on_pre_process_callback_query(self, query: types.CallbackQuery, data: dict):
         await self.setup_chat(data, query.from_user, query.message.chat if query.message else None)
+
