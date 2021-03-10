@@ -14,4 +14,5 @@ async def find_recipe_handler(msg: types.Message):
         .gino.all()
     shopping_list_product_ids = [data[3] for data in shopping_list_product_connections]
     products = list(filter(lambda item: item.id not in shopping_list_product_ids, products))
-    await msg.answer('Выберите продукты для поиска рецепта:', reply_markup=RecipeProductListKeyboard.create(products, 0, 'recipe'))
+    await msg.answer('Выберите продукты для поиска рецепта:',
+                     reply_markup=RecipeProductListKeyboard.create(products, 0, 'recipe'))

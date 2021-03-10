@@ -12,7 +12,6 @@ from app.states.state_shop_list_product import ShopListProductState
 async def add_to_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'add_to_(fridge|shopping_list)', query.data).groups()
     source = groups[0]
-
     if source == 'fridge':
         await FridgeProductState.name.set()
     elif source == 'shopping_list':

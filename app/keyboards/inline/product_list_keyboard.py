@@ -9,7 +9,8 @@ class ProductListKeyboard(InlineKeyboardMarkup):
 
     @staticmethod
     def create(products: 'typing.List[Product]', page: int, previous_button: str) -> InlineKeyboardMarkup:
-        product_buttons = [[InlineKeyboardButton(product.name, callback_data=f"show_{previous_button}_{product.id}")] for product in
+        product_buttons = [[InlineKeyboardButton(product.name, callback_data=f"show_{previous_button}_{product.id}")]
+                           for product in
                            products[page * 10:(page + 1) * 10]]
         previous_page_button = InlineKeyboardButton('<<', callback_data=f'previous_page_{previous_button}_{page}')
         next_page_button = InlineKeyboardButton('>>', callback_data=f'next_page_{previous_button}_{page}')
