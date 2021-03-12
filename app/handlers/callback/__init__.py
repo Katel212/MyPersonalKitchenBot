@@ -15,3 +15,5 @@ from .delete_product import delete_confirm_callback_handler, \
 from .add_to_recipe import add_to_recipe
 from .button_change_page_recipe import change_page_recipe
 from .find_recipe import find_recipe
+from .recipe_button import recipe_callback_handler
+from .select_recipe_button import select_recipe

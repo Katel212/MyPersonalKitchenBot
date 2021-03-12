@@ -38,7 +38,8 @@ class Parser:
 
         return recipes
 
-    async def get_recipe_details(self, recipe: Recipe) -> RecipeDetails:
+    @staticmethod
+    async def get_recipe_details(recipe: Recipe) -> RecipeDetails:
         page_content = requests.get(recipe.page_url).content.decode("utf8")
         soup = BeautifulSoup(page_content, "html.parser")
         ingredients_blocks = soup.find_all("div", class_="recept-list-left clf ingredient")
@@ -80,7 +81,7 @@ class Parser:
         instructions_block = soup.find("div", class_="instructions", itemprop="recipeInstructions")
         instructions = None
         if instructions_block:
-            instructions = instructions_block.text.strip()
+            instructions = instructions_block.get_text("\n")
 
         recipe_details: RecipeDetails = RecipeDetails(recipe.name, recipe.image, portions, weight, recipe.cooking_time, calories, protein, fat,
                                                       carbohydrate, PFC, ingredients, steps, instructions)
