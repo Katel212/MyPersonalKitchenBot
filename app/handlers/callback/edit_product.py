@@ -36,6 +36,7 @@ async def change_name_callback_handler(query: types.CallbackQuery):
     await bot.send_message(query.message.chat.id, "Введите новое название продукта (пропустить - /skip):")
     await ChangeProductState.name.set()
 
+
 @dp.callback_query_handler(filters.Regexp(r'change_expiration_date_(\d+)'))
 async def change_expiration_date_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'change_expiration_date_(\d+)', query.data).groups()

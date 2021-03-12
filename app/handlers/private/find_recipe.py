@@ -3,6 +3,7 @@ from aiogram import types
 from app.keyboards.inline.recipe_product_list_keyboard import RecipeProductListKeyboard
 from app.misc import dp
 from app.models import Product, ShoppingList, ShoppingListToProduct
+from app.states import IngredientsForRecipe
 
 
 @dp.message_handler(lambda message: message.text == 'Подобрать рецепт')
@@ -14,4 +15,5 @@ async def find_recipe_handler(msg: types.Message):
         .gino.all()
     shopping_list_product_ids = [data[3] for data in shopping_list_product_connections]
     products = list(filter(lambda item: item.id not in shopping_list_product_ids, products))
+    await IngredientsForRecipe.ingredients.set()
     await msg.answer('Выберите продукты для поиска рецепта:', reply_markup=RecipeProductListKeyboard.create(products, 0, 'recipe'))
