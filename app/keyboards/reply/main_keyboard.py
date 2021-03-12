@@ -9,7 +9,9 @@ class MainKeyboard(ReplyKeyboardMarkup):
         shopping_list_button = KeyboardButton("Список покупок")
         find_recipe_button = KeyboardButton("Подобрать рецепт")
         help_button = KeyboardButton("Помощь")
+        settings_button = KeyboardButton("Настройки")
         row1 = [my_fridge_button, shopping_list_button]
         row2 = [find_recipe_button, help_button]
-        keyboard = ReplyKeyboardMarkup([row1, row2])
+        row3 = [settings_button]
+        keyboard = ReplyKeyboardMarkup([row1, row2,row3])
         return keyboard
