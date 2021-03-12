@@ -3,6 +3,7 @@ import typing
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from app.models import Product
+from app.states import IngredientsForRecipe
 
 
 class RecipeProductListKeyboard(InlineKeyboardMarkup):
@@ -11,7 +12,7 @@ class RecipeProductListKeyboard(InlineKeyboardMarkup):
     def create(products: 'typing.List[Product]', page: int, source: str) -> InlineKeyboardMarkup:
         products_for_buttons = products[page * 10:(page + 1) * 10]
 
-        product_buttons = [[InlineKeyboardButton(product.name, callback_data=f"add_to_recipe_{product.id}")] for product in products_for_buttons]
+        product_buttons = [[InlineKeyboardButton(product.name, callback_data=f"add_to_recipe_{product.name}")] for product in products_for_buttons]
         choose_all_button = InlineKeyboardButton('Выбрать всё', callback_data=f'select_all_product_for_recipe')
         search_button = InlineKeyboardButton('Поиск', callback_data=f'find_recipe')
         previous_page_button = InlineKeyboardButton('<<', callback_data=f'previous_page_{source}_{page}')
