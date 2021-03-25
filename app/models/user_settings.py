@@ -10,6 +10,7 @@ class UserSettings(UserRelatedModel):
     id = db.Column(db.Integer, primary_key=True, index=True, unique=True)
     notifications_general_enabled = db.Column(db.Boolean)
     notifications_advance_enabled = db.Column(db.Boolean)
+    notifications_periodical_frequency_enabled = db.Column(db.Boolean)
     notifications_advance_days_until_expiration = db.Column(db.Integer)
     notifications_periodical_frequency = db.Column(db.Integer)
     notifications_weekly_enabled = db.Column(db.Boolean)
