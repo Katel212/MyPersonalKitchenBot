@@ -17,19 +17,19 @@ from app.models.user_settings import UserSettings
 
 @dp.callback_query_handler(filters.Regexp(r'notification_frequency'))
 async def notification_frequency_handler(query: types.CallbackQuery):
-    await bot.send_message(query.message.chat.id, 'Настройка частоты уведомлений: ',
+    await bot.send_message(query.message.chat.id, 'Частота уведомлений обо всех продуктах: ',
                            reply_markup=NotificationFrequencySettingsKeyboard.create())
 
 
 @dp.callback_query_handler(filters.Regexp(r'time_to_expiration_date'))
 async def expiration_date_notifications_handler(query: types.CallbackQuery):
-    await bot.send_message(query.message.chat.id, "Частота уведомлений о сроке годности :",
+    await bot.send_message(query.message.chat.id, "Частота уведомлений об истечении срока годности продукта:",
                            reply_markup=ExpirationDateNotificationsListKeyboard.create())
 
 
 @dp.callback_query_handler(filters.Regexp(r'weekly_notification'))
 async def weekly_notification_handler(query: types.CallbackQuery):
-    await bot.send_message(query.message.chat.id, "Настройка еженедельных уведомлений",
+    await bot.send_message(query.message.chat.id, "Настройка еженедельных уведомлений:",
                            reply_markup=WeeklyNotificationSettings.create())
 
 
@@ -37,7 +37,7 @@ async def weekly_notification_handler(query: types.CallbackQuery):
 async def delete_notification_handler(query: types.CallbackQuery):
     notice = await UserSettings.query.where(UserSettings.user_id == query.from_user.id).gino.first()
     await notice.update(notifications_general_enabled=False).apply()
-    await bot.send_message(query.message.chat.id, "Уведомления отключены")
+    await bot.send_message(query.message.chat.id, "Все уведомления отключены")
 
 
 @dp.callback_query_handler(filters.Regexp(r'freq_(on|off|number_of_notifications)'))
@@ -58,7 +58,7 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
                                )
     if source == 'number_of_notifications':
         await FreqNumberState.number.set()
-        await bot.send_message(query.from_user.id, 'Введите количество уведомлений',
+        await bot.send_message(query.from_user.id, 'Введите переодичность уведомлений:',
                                )
 
 
@@ -78,7 +78,7 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
                                )
     if source == 'settings':
         await ExpirationDateState.number.set()
-        await bot.send_message(query.from_user.id, 'Введите количество дней до истечения срока годности',
+        await bot.send_message(query.from_user.id, 'Введите количество дней до истечения срока годности:',
                                )
 
 
@@ -99,7 +99,8 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
     if source == 'day':
         await DayOfWeekState.name.set()
         await bot.send_message(query.from_user.id,
-                               'Выберете день недели\n1-Понедельник\n2-Вторник\n3-Среда\n4-Чертверг\n5-Пятница\n6-Суббота\n7-Воскресенье',
+                               'Выберете день недели:\n1 - понедельник\n2 - вторник\n3 - среда\n4 - чертверг\n5 - пятница\n6 - суббота\n7 - '
+                               'воскресенье',
                                )
 
 
@@ -111,12 +112,12 @@ async def frequency_numbers_per_day_state(msg: Message, state: FSMContext):
             freq = await UserSettings.query.where(UserSettings.user_id == msg.from_user.id).gino.first()
             await freq.update(notifications_general_enabled=True).apply()
             await freq.update(
-                notifications_periodical_frequency_enabled=True).apply()  # Если что,хотелось бы ,чтобы при изменении частоты включались уведомления автоматом,а не самому,всего скорее это будет разумно
+                notifications_periodical_frequency_enabled=True).apply()
             await freq.update(notifications_periodical_frequency=int(msg.text)).apply()
             await msg.answer('Частота изменена')
             await state.finish()
         else:
-            await msg.answer("Некорректный ввод")
+            await msg.answer("Некорректный ввод! Введите число")
 
 
 @dp.message_handler(state=ExpirationDateState.number)
@@ -129,10 +130,10 @@ async def expiration_date_state(msg: Message, state: FSMContext):
             await date.update(
                 notifications_advance_enabled=True).apply()
             await date.update(notifications_advance_days_until_expiration=int(msg.text)).apply()
-            await msg.answer('Время до конца срока годности изменено')
+            await msg.answer('Количество дней до конца срока годности изменено')
             await state.finish()
         else:
-            await msg.answer("Некорректный ввод")
+            await msg.answer("Некорректный ввод! Введите число")
 
 
 @dp.message_handler(state=DayOfWeekState.name)
@@ -145,7 +146,7 @@ async def day_of_week_state(msg: Message, state: FSMContext):
             await day.update(notifications_weekly_day=int(msg.text)).apply()
             await day.update(
                 notifications_weekly_enabled=True).apply()
-            await msg.answer('День недели изменен')
+            await msg.answer('День недели уведомлений изменен')
             await state.finish()
         else:
-            await msg.answer("Некорректный ввод")
+            await msg.answer("Некорректный ввод! Введите число")
