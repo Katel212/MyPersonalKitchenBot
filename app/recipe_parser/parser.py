@@ -4,6 +4,7 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 
+from app.misc import bot
 from app.recipe_parser.recipe_models import Recipe, Ingredient, RecipeDetails
 
 
