@@ -10,7 +10,6 @@ from google.cloud import vision_v1p4beta1 as vision
 from google.cloud.vision_v1p4beta1 import types
 
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google_cfg.json'
 SOURCE_PATH = os.path.abspath(os.getcwd())
 
 
@@ -21,7 +20,7 @@ def generate_random_string(length):
 
 
 def load_food_names():
-    names = [line.rstrip('\n\r') for line in codecs.open(os.path.abspath(os.getcwd()) + '\\dictionaries\\food_recognise.dict', 'r', 'utf_8_sig')]
+    names = [line.rstrip('\n\r') for line in codecs.open(os.path.abspath(os.path.dirname(__file__)) + '\\dictionaries\\food_recognise.dict', 'r', 'utf_8_sig')]
     return names
 
 
