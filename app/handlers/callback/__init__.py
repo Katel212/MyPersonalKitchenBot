@@ -17,3 +17,4 @@ from .button_change_page_recipe import change_page_recipe
 from .find_recipe import find_recipe
 from .recipe_button import recipe_callback_handler
 from .select_recipe_button import select_recipe
+from .select_all_product_for_recipe import select_all_product_for_recipe

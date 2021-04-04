@@ -12,7 +12,9 @@ from app.states import IngredientsForRecipe
 def recipe_details_helper(rd: RecipeDetails):
     # steps = rd.instructions
     ingredients = ", ".join(map(lambda x: str(x), rd.ingredients))
-    return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления{rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{rd.instructions}'
+    if rd.instructions is not None:
+        return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления{rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{rd.instructions}'
+    else: return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления{rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{rd.steps}'
 
 
 @dp.callback_query_handler(filters.Regexp(r'select_recipe_([0-9a-f]{32}\Z)'), state=IngredientsForRecipe.recipes)

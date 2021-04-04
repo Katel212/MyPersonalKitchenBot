@@ -14,5 +14,5 @@ async def handler_shopping_list_info_skip(msg: Message, state: FSMContext):
     async with state.proxy() as data:
         data['info'] = None
         new_product = await Product.create(user_id=msg.from_user.id, name=data['name'], info=data['info'])
-        await msg.answer("Продукт успешно добавлен в ваш холодильник!")
+        await msg.answer("Продукт успешно добавлен в ваш список покупок!")
     await state.finish()
