@@ -9,7 +9,6 @@ from app import middlewares, filters, handlers
 
 from app.models import base
 
-
 async def on_startup(dispatcher: Dispatcher):
     await utils.setup_logger("INFO", ["sqlalchemy.engine", "aiogram.bot.api"])
     await base.connect(config.POSTGRES_URI)

@@ -23,3 +23,5 @@ from app.handlers.states.change.change_bought_date_error_state import handler_ch
 from app.handlers.states.change.change_bought_date_state import handler_change_bought_date_state
 from app.handlers.states.change.change_info_cancel_state import handler_change_info_cancel_state
 from app.handlers.states.change.change_info_state import handler_change_info_state
+from app.handlers.states.fridge_add_photo_state import handle_fridge_product_photo_state
+from app.handlers.states.sjopping_list_add_photo_state import handle_shopping_list_product_photo_state

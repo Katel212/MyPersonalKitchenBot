@@ -17,3 +17,6 @@ from .button_change_page_recipe import change_page_recipe
 from .find_recipe import find_recipe
 from .recipe_button import recipe_callback_handler
 from .select_recipe_button import select_recipe
+from .add_product_typing import add_product_typing_fridge_handler, add_product_typing_shoplist_handler
+from .add_product_photo import add_product_photo_fridge_handler, add_product_photo_shoplist_handler, \
+    add_product_photo_fridge_nameok_handler, add_product_photo_shoplist_nameok_handler

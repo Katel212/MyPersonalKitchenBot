@@ -21,6 +21,10 @@ numpy = "^1.20.1"
 beautifulsoup4 = "^4.9.3"
 requests = "^2.25.1"
 grequests = "^0.6.0"
+cv = "^1.0.0"
+opencv-contrib-python = "^4.5.1"
+google-cloud-vision = "^2.3.0"
+google-api-python-client = "^2.1.0"
 
 
 [build-system]
