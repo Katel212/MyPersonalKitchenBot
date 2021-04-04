@@ -19,10 +19,10 @@ async def other_settings_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'other_(default_list_of_products|auto_set_purchase_date)', query.data).groups()
     source = groups[0]
     if source == 'auto_set_purchase_date':
-        await bot.send_message(query.from_user.id, 'Настройка автоматического выставления даты покупки:',
+        await bot.send_message(query.from_user.id, 'Настройка автоматической выставления даты:',
                                reply_markup=AutomaticSettingOfThePurchaseDateListKeyboard.create())
     elif source == 'default_list_of_products':
-        await bot.send_message(query.from_user.id, 'Настройка стандартного списка продуктов:',
+        await bot.send_message(query.from_user.id, 'Настройка дефолтного списка покупок:',
                                reply_markup=DefaultListOfProductsListKeyboard.create())
 
 
@@ -31,9 +31,11 @@ async def purchase_date_list_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'purchase_date_list_(on|off)', query.data).groups()
     source = groups[0]
     if source == 'on':
-        await bot.send_message(query.from_user.id, 'Включено')
+        await bot.send_message(query.from_user.id, 'Включено',
+                               )
     elif source == 'off':
-        await bot.send_message(query.from_user.id, 'Выключено')
+        await bot.send_message(query.from_user.id, 'Не включено',
+                               )
 
 
 @dp.callback_query_handler(filters.Regexp(r'default_list_(on|off)'))
@@ -77,7 +79,7 @@ async def default_list_callback_handler(query: types.CallbackQuery):
                                            bought_date=datetime.today(),
                                            info='')
         new_product = await Product.create(user_id=query.from_user.id,
-                                           name='Гречка',
+                                           name='Гречневая каша',
                                            expiration_date=datetime.today() + timedelta(days=365),
                                            bought_date=datetime.today(),
                                            info='')
@@ -107,12 +109,17 @@ async def default_list_callback_handler(query: types.CallbackQuery):
                                            bought_date=datetime.today(),
                                            info='')
         new_product = await Product.create(user_id=query.from_user.id,
+                                           name='Дрожжи',
+                                           expiration_date=datetime.today() + timedelta(days=31),
+                                           bought_date=datetime.today(),
+                                           info='')
+        new_product = await Product.create(user_id=query.from_user.id,
                                            name='Молоко',
                                            expiration_date=datetime.today() + timedelta(days=2),
                                            bought_date=datetime.today(),
                                            info='')
         new_product = await Product.create(user_id=query.from_user.id,
-                                           name='Яйца куриные',
+                                           name='Яйца(куриные)',
                                            expiration_date=datetime.today() + timedelta(days=7),
                                            bought_date=datetime.today(),
                                            info='')
@@ -126,26 +133,14 @@ async def default_list_callback_handler(query: types.CallbackQuery):
                                            expiration_date=datetime.today() + timedelta(days=365),
                                            bought_date=datetime.today(),
                                            info='')
-        await bot.send_message(query.from_user.id, 'Продукты добавлены в ваш холодильник',
+        new_product = await Product.create(user_id=query.from_user.id,
+                                           name='Яйца(куриные)',
+                                           expiration_date=datetime.today() + timedelta(days=365),
+                                           bought_date=datetime.today(),
+                                           info='')
+        await bot.send_message(query.from_user.id, 'Загружено',
                                )
 
     elif source == 'off':
-        await Product.delete.where(Product.name == 'Хлеб').gino.status()
-        await Product.delete.where(Product.name == 'Мука пшеничная').gino.status()
-        await Product.delete.where(Product.name == 'Сода').gino.status()
-        await Product.delete.where(Product.name == 'Соль').gino.status()
-        await Product.delete.where(Product.name == 'Сахар').gino.status()
-        await Product.delete.where(Product.name == 'Черный перец').gino.status()
-        await Product.delete.where(Product.name == 'Макароны').gino.status()
-        await Product.delete.where(Product.name == 'Гречка').gino.status()
-        await Product.delete.where(Product.name == 'Рис').gino.status()
-        await Product.delete.where(Product.name == 'Масло подсолнечное').gino.status()
-        await Product.delete.where(Product.name == 'Масло сливочное').gino.status()
-        await Product.delete.where(Product.name == 'Лук репчатый').gino.status()
-        await Product.delete.where(Product.name == 'Чеснок').gino.status()
-        await Product.delete.where(Product.name == 'Молоко').gino.status()
-        await Product.delete.where(Product.name == 'Яйца куриные').gino.status()
-        await Product.delete.where(Product.name == 'Чай').gino.status()
-        await Product.delete.where(Product.name == 'Кофе').gino.status()
-        await bot.send_message(query.from_user.id, 'Продукты удалены из вашего холодильника',
+        await bot.send_message(query.from_user.id, 'Удален',
                                )
