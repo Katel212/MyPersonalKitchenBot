@@ -11,12 +11,13 @@ from app.models import Product
 
 
 def edit_info_product_message(name: str, exp_date: datetime, bought_date: datetime, info: str):
-    bubble = f'{name}\n'
+    bubble = f'Продукт:\n{name}\n'
     if exp_date is not None:
         bubble += f'Срок годности: до {exp_date}\n'
     if bought_date is not None:
         bubble += f'Дата покупки: {bought_date}\n'
     bubble += info if info else ''
+    bubble+='Что изменить?'
     return bubble
 
 
@@ -25,8 +26,7 @@ async def edit_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'change_(\d*)', query.data).groups()
     product = await Product.query.where(Product.id == int(groups[0])).gino.first()
     await bot.send_message(query.from_user.id,
-                           edit_info_product_message(product.name, product.expiration_date, product.bought_date,
-                                                     product.info),
+                           "Что изменить?",
                            reply_markup=ChangeInfoAboutProductKeyboard.create(product))
 
 

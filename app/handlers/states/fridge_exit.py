@@ -5,8 +5,8 @@ from aiogram.dispatcher.filters import Text
 from app.misc import dp
 
 
-@dp.message_handler(state='*', commands='exit')
-@dp.message_handler(Text(equals='exit', ignore_case=True), state='*')
+@dp.message_handler(state='*', commands='cancel')
+@dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
 async def exit_handler(message: types.Message, state: FSMContext):
 
     current_state = await state.get_state()
@@ -14,4 +14,4 @@ async def exit_handler(message: types.Message, state: FSMContext):
         return
 
     await state.finish()
-    await message.reply('Добавление отменено.')
+    await message.reply('Отменено')

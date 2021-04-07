@@ -11,6 +11,6 @@ class ExpirationDateNotificationsListKeyboard(InlineKeyboardMarkup):
             'Количество дней до истечения срока годности',
             callback_data=f'date_settings')
 
-        return InlineKeyboardMarkup(inline_keyboard=[[turn_on_button], [turn_off_button],
+        return InlineKeyboardMarkup(inline_keyboard=[[turn_on_button, turn_off_button],
                                                      [number_of_days_before_expiration_date_button]
                                                      ])
