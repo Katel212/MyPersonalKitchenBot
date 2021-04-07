@@ -20,3 +20,5 @@ from .select_recipe_button import select_recipe
 from .add_product_typing import add_product_typing_fridge_handler, add_product_typing_shoplist_handler
 from .add_product_photo import add_product_photo_fridge_handler, add_product_photo_shoplist_handler, \
     add_product_photo_fridge_nameok_handler, add_product_photo_shoplist_nameok_handler
+from .add_to_shop_list_from_fridge import add_to_shop_list_from_fridge
+from .buy_button import buy_product
