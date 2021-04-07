@@ -1,8 +1,9 @@
 from datetime import datetime
 
+import dateutil
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
-
+from dateutil import *
 from app.misc import dp
 from app.models import Product
 from app.states import FridgeProductState
@@ -15,15 +16,12 @@ async def handler_fridge_skip_info_state(msg: Message, state: FSMContext):
         return
     async with state.proxy() as data:
         data['info'] = None
-        date_format = '%d.%m.%Y'
-        if not data['expiration_date']:
-            exp_date = None
-        else:
-            exp_date = datetime.strptime(data['expiration_date'], date_format)
-        if not data['bought_date']:
-            bought_date = None
-        else:
-            bought_date = datetime.strptime(data['bought_date'], date_format)
+        exp_date = None
+        if data['expiration_date'] is not None:
+            exp_date = dateutil.parser.parse(data['expiration_date'])
+        bought_date = None
+        if data['bought_date'] is not None:
+            bought_date = dateutil.parser.parse(data['bought_date'])
         new_product = await Product.create(user_id=msg.from_user.id, name=data['name'], expiration_date=exp_date,
                                            bought_date=bought_date, info=data['info'])
         await msg.answer("Продукт успешно добавлен в ваш холодильник!")

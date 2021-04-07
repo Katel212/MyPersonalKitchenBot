@@ -9,14 +9,17 @@ from app.keyboards.inline.product_for_shop_list_keyboard import ShoppingListProd
 from app.keyboards.inline.product_keyboard import ProductKeyboard
 from app.misc import dp, bot
 from app.models import Product
+from dateutil.parser import parse
 
 
 def create_info_product_message(name: str, exp_date: datetime, bought_date: datetime, info: str):
     bubble = f'{name}\n'
     if exp_date is not None:
-        bubble += f'Срок годности: до {exp_date}\n'
+        e = parse(str(exp_date)).strftime('%d.%m.%Y')
+        bubble += f'Срок годности: до {e}\n'
     if bought_date is not None:
-        bubble += f'Дата покупки: {bought_date}\n'
+        b = parse(str(bought_date)).strftime('%d.%m.%Y')
+        bubble += f'Дата покупки: {b}\n'
     bubble += info if info else ''
     return bubble
 

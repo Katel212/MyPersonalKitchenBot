@@ -8,16 +8,19 @@ from app.handlers.states.change.change_name_state import ChangeProductState
 from app.keyboards.inline.edit_product_keyboard import ChangeInfoAboutProductKeyboard
 from app.misc import dp, bot
 from app.models import Product
+from dateutil.parser import parse
 
 
 def edit_info_product_message(name: str, exp_date: datetime, bought_date: datetime, info: str):
     bubble = f'Продукт:\n{name}\n'
     if exp_date is not None:
-        bubble += f'Срок годности: до {exp_date}\n'
+        e = parse(str(exp_date)).strftime('%d.%m.%Y')
+        bubble += f'Срок годности: до {e}\n'
     if bought_date is not None:
-        bubble += f'Дата покупки: {bought_date}\n'
+        b = parse(str(bought_date)).strftime('%d.%m.%Y')
+        bubble += f'Дата покупки: {b}\n'
     bubble += info if info else ''
-    bubble+='Что изменить?'
+    bubble += 'Что изменить?'
     return bubble
 
 

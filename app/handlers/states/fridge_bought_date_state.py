@@ -1,19 +1,21 @@
 import re
 from datetime import datetime
 
+import dateutil
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
 from app.misc import dp
 from app.states import FridgeProductState
+from dateutil import *
 
 
-@dp.message_handler(lambda msg: re.search(r'^\d{1,2}\.\d{1,2}\.\d{4}$', msg.text), state=FridgeProductState.bought_date)
+@dp.message_handler(state=FridgeProductState.bought_date)
 async def handler_fridge_bought_date_state(msg: Message, state: FSMContext):
     try:
-        datetime.strptime(msg.text, '%d.%m.%Y')
+        dateutil.parser.parse(msg.text)
     except ValueError:
-        await msg.answer('Такой даты не существует!\nВведите корректную дату покупки в формате "дд.мм.гггг"')
+        await msg.answer('Такой даты не существует!\nВведите корректную дату покупки')
         return
     async with state.proxy() as data:
         data['bought_date'] = msg.text
