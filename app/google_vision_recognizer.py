@@ -1,14 +1,13 @@
+import codecs
 import io
 import os
 import random
 import re
-import codecs
 import string
 
 import cv2
 from google.cloud import vision_v1p4beta1 as vision
 from google.cloud.vision_v1p4beta1 import types
-
 
 SOURCE_PATH = os.environ['SOURCE_PATH']
 
@@ -20,7 +19,8 @@ def generate_random_string(length):
 
 
 def load_food_names():
-    names = [line.rstrip('\n\r') for line in codecs.open(os.path.abspath(os.path.dirname(__file__)) + '\\dictionaries\\food_recognise.dict', 'r', 'utf_8_sig')]
+    names = [line.rstrip('\n\r') for line in
+             codecs.open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "dictionaries", "food_recognise.dict"), 'r', 'utf_8_sig')]
     return names
 
 
@@ -29,8 +29,8 @@ def recognize_food(img_path, list_foods):
     img = cv2.imread(img_path)
     height, width = img.shape[:2]
     img = cv2.resize(img, (800, int((height * 800) / width)))
-    cv2.imwrite(SOURCE_PATH + '\\output.jpg', img)
-    img_path = SOURCE_PATH + '\\output.jpg'
+    img_path = os.path.join(SOURCE_PATH, "output.jpg")
+    cv2.imwrite(img_path, img)
     # Recognize
     client = vision.ImageAnnotatorClient()
     image_context = types.ImageContext(language_hints=["ru"])
@@ -59,7 +59,7 @@ def recognize_food(img_path, list_foods):
                 result = line
 
     if is_find_img:
-        eng_rus_dict = codecs.open(os.path.abspath(os.getcwd()) + '\\dictionaries\\rec_eng_rus.dict', 'r', 'utf_8_sig' )
+        eng_rus_dict = codecs.open(os.path.join(os.path.abspath(os.getcwd()), "dictionaries", "rec_eng_rus.dict"), 'r', 'utf_8_sig')
         lines = eng_rus_dict.readlines()
         for line in lines:
             pair = line.split(':')
