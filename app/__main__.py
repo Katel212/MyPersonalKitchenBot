@@ -1,17 +1,14 @@
-import schedule
+from aiogram import Dispatcher
 from aiogram import Dispatcher
 from aiogram.utils import executor
 
 from app import utils, config
 from app.misc import dp
 from app.models import base
+
+
 # from app.notifications.weekly_notifications import weekly_notifications
-
-
 # The configuration of the modules using import
-from app import middlewares, filters, handlers
-
-from app.models import base
 
 async def on_startup(dispatcher: Dispatcher):
     await utils.setup_logger("INFO", ["sqlalchemy.engine", "aiogram.bot.api"])
