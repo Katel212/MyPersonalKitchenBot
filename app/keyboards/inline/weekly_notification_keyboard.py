@@ -10,6 +10,6 @@ class WeeklyNotificationSettings(InlineKeyboardMarkup):
         day_of_week_button = InlineKeyboardButton('Выбор дня недели',
                                                   callback_data=f'week_day')
 
-        return InlineKeyboardMarkup(inline_keyboard=[[turn_on_button], [turn_off_button],
+        return InlineKeyboardMarkup(inline_keyboard=[[turn_on_button, turn_off_button],
                                                      [day_of_week_button]
                                                      ])

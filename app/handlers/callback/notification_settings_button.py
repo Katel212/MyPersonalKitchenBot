@@ -100,7 +100,9 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
     if source == 'day':
         await DayOfWeekState.name.set()
         await bot.send_message(query.from_user.id,
-                               'Выберите день недели:\n1 - понедельник\n2 - вторник\n3 - среда\n4 - четверг\n5 - пятница\n6 - суббота\n7 - '
+
+                               'Выберете день недели:\n1 - понедельник\n2 - вторник\n3 - среда\n4 - четверг\n5 - пятница\n6 - суббота\n7 - '
+
                                'воскресенье',
                                )
 
