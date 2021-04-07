@@ -12,7 +12,7 @@ class User(TimedBaseModel):
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String)
     username = db.Column(db.String)
-    language = db.Column(db.String, nullable=False)
+    language = db.Column(db.String, nullable=True)
     query: Select
 
 
