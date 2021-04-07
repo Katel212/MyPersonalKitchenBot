@@ -9,6 +9,7 @@ from app.keyboards.inline.notification_frequency_keyboard import NotificationFre
 from app.keyboards.inline.expiration_date_notifications_keyboard import ExpirationDateNotificationsListKeyboard
 from app.keyboards.inline.weekly_notification_keyboard import WeeklyNotificationSettings
 from app.misc import dp, bot
+from app.notification.weekly_notification import every_day_notification_checker
 from app.states.state_freq_number import FreqNumberState
 from app.states.state_expiration_date import ExpirationDateState
 from app.states.state_day_of_week import DayOfWeekState
@@ -99,7 +100,7 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
     if source == 'day':
         await DayOfWeekState.name.set()
         await bot.send_message(query.from_user.id,
-                               'Выберете день недели:\n1 - понедельник\n2 - вторник\n3 - среда\n4 - чертверг\n5 - пятница\n6 - суббота\n7 - '
+                               'Выберите день недели:\n1 - понедельник\n2 - вторник\n3 - среда\n4 - четверг\n5 - пятница\n6 - суббота\n7 - '
                                'воскресенье',
                                )
 
@@ -147,6 +148,7 @@ async def day_of_week_state(msg: Message, state: FSMContext):
             await day.update(
                 notifications_weekly_enabled=True).apply()
             await msg.answer('День недели уведомлений изменен')
+            await every_day_notification_checker()
             await state.finish()
         else:
             await msg.answer("Некорректный ввод! Введите число")
