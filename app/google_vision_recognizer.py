@@ -42,29 +42,64 @@ def recognize_food(img_path, list_foods):
     response = client.text_detection(image=image, image_context=image_context)
     texts = response.text_annotations
 
+    food_res_list = []
+
     is_find_img = False
     for label in labels:
         desc = label.description.lower()
         score = round(label.score, 5)
-        if desc in list_foods and score > 0.8:
-            result = desc
+        if desc in list_foods and score > 0.7:
+            food_res_list.append(desc)
             is_find_img = True
-            break
-        else:
-            result = 'not_found'
 
     for text in texts:
         for line in list_foods:
             if re.fullmatch(r'.?' + line + r'.?', text.description):
-                result = line
+                food_res_list.append(line)
 
     if is_find_img:
         eng_rus_dict = codecs.open(os.path.join(os.path.abspath(os.getcwd()), "dictionaries", "rec_eng_rus.dict"), 'r', 'utf_8_sig')
         lines = eng_rus_dict.readlines()
         for line in lines:
             pair = line.split(':')
-            if result == pair[0]:
-                result = pair[1]
+            for i in range(len(food_res_list)):
+                if food_res_list[i] == pair[0]:
+                    food_res_list[i] = pair[1]
+
+    food_res_list = [line.rstrip() for line in food_res_list]
+    for i in range(len(food_res_list)):
+        food_res_list[i] = food_res_list[i].title()
+
     os.remove(img_path)
-    result = result.title()
-    return result
+    return food_res_list
+
+
+def recognize_check(img_path, list_foods):
+    # Scale image
+    img = cv2.imread(img_path)
+    height, width = img.shape[:2]
+    img = cv2.resize(img, (800, int((height * 800) / width)))
+    img_path = os.path.join(SOURCE_PATH, "output.jpg")
+    cv2.imwrite(img_path, img)
+    # Recognize
+    client = vision.ImageAnnotatorClient()
+    image_context = types.ImageContext(language_hints=["ru"])
+    with io.open(img_path, 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+    response = client.text_detection(image=image, image_context=image_context)
+    texts = response.text_annotations
+
+    food_res_list = []
+
+    for text in texts:
+        print(text.description)
+        for line in list_foods:
+            if re.fullmatch(r'.?' + line + r'.?', text.description):
+                food_res_list.append(line)
+
+    food_res_list = [line.rstrip() for line in food_res_list]
+    for i in range(len(food_res_list)):
+        food_res_list[i] = food_res_list[i].title()
+    os.remove(img_path)
+    return food_res_list
