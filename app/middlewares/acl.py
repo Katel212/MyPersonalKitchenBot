@@ -29,12 +29,13 @@ class ACLMiddleware(BaseMiddleware):
                 user_id=user.id
             )
             await UserSettings.create(user_id=user.id,
-                                      notifications_general_enabled=False,
+                                      notifications_general_enabled=True,
                                       notifications_advance_enabled=False,
                                       notifications_advance_days_until_expiration=None,
+                                      notifications_periodical_frequency_enabled=False,
                                       notifications_periodical_frequency=None,
-                                      notifications_weekly_enabled=False,
-                                      notifications_weekly_day=None)
+                                      notifications_weekly_enabled=True,
+                                      notifications_weekly_day=5)
         chat = await Chat.get(chat_id)
         if chat is None:
             chat = await Chat.create(id=chat_id, type=chat_type)
