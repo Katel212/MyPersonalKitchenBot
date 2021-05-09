@@ -54,7 +54,7 @@ def recognize_food(img_path, list_foods):
 
     for text in texts:
         for line in list_foods:
-            if re.fullmatch(r'.?' + line + r'.?', text.description):
+            if re.fullmatch(r'.?' + line + r'.?', text.description.lower()):
                 food_res_list.append(line)
 
     if is_find_img:
@@ -93,9 +93,8 @@ def recognize_check(img_path, list_foods):
     food_res_list = []
 
     for text in texts:
-        print(text.description)
         for line in list_foods:
-            if re.fullmatch(r'.?' + line + r'.?', text.description):
+            if re.fullmatch(r'.?' + line + r'.?', text.description.lower()):
                 food_res_list.append(line)
 
     food_res_list = [line.rstrip() for line in food_res_list]
