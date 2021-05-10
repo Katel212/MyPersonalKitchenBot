@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 import re
 
 from aiogram import types
@@ -9,6 +9,8 @@ from app.keyboards.inline.notification_frequency_keyboard import NotificationFre
 from app.keyboards.inline.expiration_date_notifications_keyboard import ExpirationDateNotificationsListKeyboard
 from app.keyboards.inline.weekly_notification_keyboard import WeeklyNotificationSettings
 from app.misc import dp, bot
+from app.notification.advance_notifications import advance_notification_checker
+from app.notification.frequence_notifications import frequency_notification_checker
 from app.notification.weekly_notification import every_day_notification_checker
 from app.states.state_freq_number import FreqNumberState
 from app.states.state_expiration_date import ExpirationDateState
@@ -52,6 +54,8 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
 
         await bot.send_message(query.from_user.id, 'Включено',
                                )
+        await freq.update(last_notify_day_frequency=dt.datetime.now()).apply()
+        await frequency_notification_checker()
 
     if source == 'off':
         await freq.update(notifications_periodical_frequency_enabled=False).apply()
@@ -71,6 +75,7 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
     if source == 'on':
         await date.update(notifications_general_enabled=True).apply()
         await date.update(notifications_advance_enabled=True).apply()
+        await advance_notification_checker()
         await bot.send_message(query.from_user.id, 'Включено',
                                )
     if source == 'off':
@@ -93,6 +98,7 @@ async def frequency_notification_settings_callback_handler(query: types.Callback
         await day.update(notifications_weekly_enabled=True).apply()
         await bot.send_message(query.from_user.id, 'Включено',
                                )
+        await every_day_notification_checker()
     if source == 'off':
         await day.update(notifications_weekly_enabled=False).apply()
         await bot.send_message(query.from_user.id, 'Выключено',
@@ -117,6 +123,8 @@ async def frequency_numbers_per_day_state(msg: Message, state: FSMContext):
             await freq.update(
                 notifications_periodical_frequency_enabled=True).apply()
             await freq.update(notifications_periodical_frequency=int(msg.text)).apply()
+            await freq.update(last_notify_day_frequency=dt.datetime.now()).apply()
+            await frequency_notification_checker()
             await msg.answer('Частота изменена')
             await state.finish()
         else:
@@ -134,6 +142,7 @@ async def expiration_date_state(msg: Message, state: FSMContext):
                 notifications_advance_enabled=True).apply()
             await date.update(notifications_advance_days_until_expiration=int(msg.text)).apply()
             await msg.answer('Количество дней до конца срока годности изменено')
+            await advance_notification_checker()
             await state.finish()
         else:
             await msg.answer("Некорректный ввод! Введите число")
