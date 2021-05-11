@@ -17,10 +17,11 @@ class RecipeProductListKeyboard(InlineKeyboardMarkup):
         search_button = InlineKeyboardButton('Поиск', callback_data=f'find_recipe')
         previous_page_button = InlineKeyboardButton('<<', callback_data=f'previous_page_{source}_{page}')
         next_page_button = InlineKeyboardButton('>>', callback_data=f'next_page_{source}_{page}')
+        calories_button = InlineKeyboardButton('ККАЛ', callback_data='calories_keyboard')
         second_last_row_buttons = []
         if page != 0:
             second_last_row_buttons.append(previous_page_button)
         if (page + 1) * 10 < len(products):
             second_last_row_buttons.append(next_page_button)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[*product_buttons, second_last_row_buttons, [choose_all_button, search_button]])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[*product_buttons, second_last_row_buttons, [choose_all_button,calories_button, search_button]])
         return keyboard

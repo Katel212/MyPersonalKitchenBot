@@ -22,3 +22,4 @@ async def recipe_callback_handler(query: types.CallbackQuery, state: FSMContext)
         recipes = list_recipes['recipes']
         recipe = next((x for x in recipes if x.id == recipe_id[0]), None)
         await bot.send_photo(query.from_user.id, recipe.image, recipe_helper(recipe), reply_markup=SelectRecipe.create(recipe))
+    await query.answer()

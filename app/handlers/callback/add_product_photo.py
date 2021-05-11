@@ -25,6 +25,7 @@ async def add_product_photo_fridge_nameok_handler(query: types.CallbackQuery, st
         data['name'] = name
     await FridgeProductState.expiration_date.set()
     await bot.send_message(query.message.chat.id, 'Введите срок годности продукта ("дд.мм.гггг", пропустить - /skip)')
+    await query.answer()
 
 @dp.callback_query_handler(filters.Text('add_product_photo_[\'shopping_list\']'))
 async def add_product_photo_shoplist_handler(query: types.CallbackQuery):
@@ -40,4 +41,5 @@ async def add_product_photo_shoplist_nameok_handler(query: types.CallbackQuery, 
         data['name'] = name
     await ShopListProductState.info.set()
     await bot.send_message(query.message.chat.id, 'Введите дополнительную информацию о продукте ("дд.мм.гггг", пропустить - /skip)')
+    await query.answer()
 

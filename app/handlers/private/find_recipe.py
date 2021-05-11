@@ -35,4 +35,8 @@ async def find_recipe_handler_st(msg: types.Message, state: FSMContext):
     shopping_list_product_ids = [data[3] for data in shopping_list_product_connections]
     products = list(filter(lambda item: item.id not in shopping_list_product_ids, products))
     await IngredientsForRecipe.ingredients.set()
+    await IngredientsForRecipe.next()
+    async with state.proxy() as kcal:
+        kcal['kcal'] = None
+    await IngredientsForRecipe.previous()
     await msg.answer('Выберите продукты для поиска рецепта:', reply_markup=RecipeProductListKeyboard.create(products, 0, 'recipe'))

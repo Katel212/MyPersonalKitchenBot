@@ -11,7 +11,7 @@ from app.misc import dp, bot
 from app.keyboards.inline.automatic_setting_of_the_purchase_date_keyboard import \
     AutomaticSettingOfThePurchaseDateListKeyboard
 from app.keyboards.inline.default_list_of_products_keyboard import DefaultListOfProductsListKeyboard
-from app.models import Product
+from app.models import Product, UserSettings
 
 
 @dp.callback_query_handler(filters.Regexp(r'other_(default_list_of_products|auto_set_purchase_date)'))
@@ -19,23 +19,28 @@ async def other_settings_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'other_(default_list_of_products|auto_set_purchase_date)', query.data).groups()
     source = groups[0]
     if source == 'auto_set_purchase_date':
-        await bot.send_message(query.from_user.id, 'Настройка автоматической выставления даты:',
+        await bot.edit_message_text('Настройка автоматической выставления даты:', query.from_user.id, query.message.message_id,
                                reply_markup=AutomaticSettingOfThePurchaseDateListKeyboard.create())
     elif source == 'default_list_of_products':
-        await bot.send_message(query.from_user.id, 'Настройка дефолтного списка покупок:',
+        await bot.edit_message_text('Настройка дефолтного списка покупок:', query.from_user.id, query.message.message_id,
                                reply_markup=DefaultListOfProductsListKeyboard.create())
+    await query.answer()
 
 
 @dp.callback_query_handler(filters.Regexp(r'purchase_date_list_(on|off)'))
 async def purchase_date_list_callback_handler(query: types.CallbackQuery):
     groups = re.match(r'purchase_date_list_(on|off)', query.data).groups()
     source = groups[0]
+    user = await UserSettings.query.where(UserSettings.user_id == query.from_user.id).gino.first()
     if source == 'on':
         await bot.send_message(query.from_user.id, 'Включено',
                                )
+        await user.update(automatic_bought_date=True).apply()
     elif source == 'off':
-        await bot.send_message(query.from_user.id, 'Не включено',
+        await bot.send_message(query.from_user.id, 'Выключено',
                                )
+        await user.update(automatic_bought_date=False).apply()
+    await query.answer()
 
 
 @dp.callback_query_handler(filters.Regexp(r'default_list_(on|off)'))
@@ -144,3 +149,4 @@ async def default_list_callback_handler(query: types.CallbackQuery):
     elif source == 'off':
         await bot.send_message(query.from_user.id, 'Удален',
                                )
+    await query.answer()
