@@ -17,5 +17,5 @@ async def change_page_recipe(query: types.CallbackQuery, state: FSMContext):
     elif groups[0] == 'next':
         new_page = int(groups[1])+1
     async with state.proxy() as recipes:
-        # RecipesListKeyboard.create(recipes['recipes'], new_page)
         await bot.edit_message_reply_markup(query.from_user.id,query.message.message_id,reply_markup=RecipesListKeyboard.create(recipes['recipes'], new_page))
+    await query.answer()

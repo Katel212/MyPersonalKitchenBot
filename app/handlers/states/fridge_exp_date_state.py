@@ -7,6 +7,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
 from app.misc import dp, storage
+from app.models import UserSettings
 from app.states import FridgeProductState
 
 
@@ -26,4 +27,11 @@ async def handler_fridge_expiration_date_state(msg: Message, state: FSMContext):
     async with state.proxy() as data:
         data['expiration_date'] = msg.text
     await FridgeProductState.next()
-    await msg.answer('Введите дату покупки продукта (пропустить - /skip, пропустить остальные шаги /skipall)')
+    user = await UserSettings.query.where(UserSettings.user_id == msg.from_user.id).gino.first()
+    if user.automatic_bought_date:
+        async with state.proxy() as data:
+            data['bought_date'] = str(datetime.now().date())
+        await FridgeProductState.next()
+        await msg.answer("Введите дополнительную информацию о продукте (пропустить - /skip)")
+    else:
+        await msg.answer('Введите дату покупки продукта (пропустить - /skip, пропустить остальные шаги /skipall)')

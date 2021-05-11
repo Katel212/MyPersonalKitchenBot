@@ -23,4 +23,5 @@ async def select_all_product_for_recipe(query: types.CallbackQuery, state: FSMCo
             st["ingredients"] = []
         for prod in products:
             st["ingredients"].append(prod.name)
+    await query.answer()
 

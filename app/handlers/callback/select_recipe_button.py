@@ -27,3 +27,4 @@ async def select_recipe(query: types.CallbackQuery, state: FSMContext):
         recipe_details = await Parser.get_recipe_details(recipe)
         await bot.send_message(query.from_user.id, recipe_details_helper(recipe_details))
     await state.finish()
+    await query.answer()

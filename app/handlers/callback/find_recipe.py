@@ -19,4 +19,5 @@ async def find_recipe(query: types.CallbackQuery, state: FSMContext):
         ingredients['recipes'] = parser.get_recipes()
         await bot.send_message(query.from_user.id, f'Возможные рецепты из {", ".join(ingredients_list)}:',
                                reply_markup=RecipesListKeyboard.create(ingredients['recipes'], 0))
+        await query.answer()
 

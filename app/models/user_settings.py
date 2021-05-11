@@ -16,5 +16,6 @@ class UserSettings(UserRelatedModel):
     notifications_weekly_enabled = db.Column(db.Boolean)
     notifications_weekly_day = db.Column(db.Integer)
     last_notify_day_frequency = db.Column(db.Date)
+    automatic_bought_date = db.Column(db.Boolean)
     query: Select
 
