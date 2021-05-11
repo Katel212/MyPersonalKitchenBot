@@ -24,5 +24,6 @@ from .add_product_photo import add_product_photo_fridge_handler, add_product_pho
     add_product_photo_check_fridge_handler, add_product_photo_choice_shoplist_handler
 from .add_to_shop_list_from_fridge import add_to_shop_list_from_fridge
 from .buy_button import buy_product
+from .button_change_page_ingredients import page_callback_handler
 from .calories_handler import calories_filter_handler
 from .calories_keyboard_handler import calories_keyboard_handler

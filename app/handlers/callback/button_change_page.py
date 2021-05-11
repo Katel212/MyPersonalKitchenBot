@@ -10,9 +10,9 @@ from app.misc import dp, bot
 from app.models import Product, ShoppingList, ShoppingListToProduct, User
 
 
-@dp.callback_query_handler(filters.Regexp(r'(previous_page|next_page)_(fridge|shopping_list|recipe)_(\d*)'))
+@dp.callback_query_handler(filters.Regexp(r'(previous_page|next_page)_(fridge|shopping_list)_(\d*)'))
 async def page_callback_handler(query: types.CallbackQuery):
-    groups = re.match(r'(previous_page|next_page)_(fridge|shopping_list|recipe)_(\d*)', query.data).groups()
+    groups = re.match(r'(previous_page|next_page)_(fridge|shopping_list)_(\d*)', query.data).groups()
     new_page = 0
     if groups[0] == 'previous_page':
         new_page = int(groups[2]) - 1
@@ -43,8 +43,5 @@ async def page_callback_handler(query: types.CallbackQuery):
             .gino.all()
         products = [Product.create_product(*list(item)[12:]) for item in products_with_trash]
         keyboard = ProductListKeyboard.create(products, new_page, source)
-    elif source == 'recipe':
-        products = await Product.query.where(Product.user_id == query.from_user.id).gino.all()
-        keyboard = RecipeProductListKeyboard.create(products, new_page, source)
     await bot.edit_message_reply_markup(query.message.chat.id, query.message.message_id, reply_markup=keyboard)
     await query.answer()

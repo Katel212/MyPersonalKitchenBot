@@ -22,9 +22,13 @@ async def find_recipe(query: types.CallbackQuery, state: FSMContext):
         search_url = await helper.get_search_string()
         parser = Parser(search_url)
         recipes_list: List = parser.get_recipes()
-        if ingredients['kcal'] is None:
+        if not ingredients.get("kcal", None):
             ingredients['recipes'] = recipes_list
         else:
             ingredients['recipes'] = [i for i in recipes_list if (re.match(r'(\d*)', i.calories).groups())[0] < ingredients['kcal']]
-        await bot.send_message(query.from_user.id, f'Возможные рецепты из {", ".join(ingredients_list)}:',
+        if ingredients['recipes']:
+            await bot.send_message(query.from_user.id, f'Возможные рецепты из {", ".join(ingredients_list)}:',
                                reply_markup=RecipesListKeyboard.create(ingredients['recipes'], 0))
+        else:
+            await bot.send_message(query.from_user.id, f'Рецепты из {", ".join(ingredients_list)} не найдены')
+            await state.finish()
