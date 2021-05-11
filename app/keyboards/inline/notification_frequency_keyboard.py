@@ -9,7 +9,8 @@ class NotificationFrequencySettingsKeyboard(InlineKeyboardMarkup):
         turn_off_button = InlineKeyboardButton('Выключить', callback_data=f'freq_off')
         number_of_notifications_per_day_button = InlineKeyboardButton('Количество дней между уведомлениями',
                                                                       callback_data=f'freq_number_of_notifications')
-
+        back_button = InlineKeyboardButton('<<', callback_data='back_to_notice_settings')
         return InlineKeyboardMarkup(inline_keyboard=[[turn_on_button, turn_off_button],
-                                                     [number_of_notifications_per_day_button]
+                                                     [number_of_notifications_per_day_button],
+                                                     [back_button]
                                                      ])

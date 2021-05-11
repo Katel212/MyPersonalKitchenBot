@@ -15,4 +15,5 @@ async def add_to_shop_list_from_fridge(query: types.CallbackQuery):
     new_product = await Product.create(user_id=query.from_user.id, name=product.name, info=None)
     await ShoppingListToProduct.create( product_id=new_product.id, shopping_list_id=shop_list.id)
     await bot.send_message(query.from_user.id,"Продукт добавлен в список покупок")
+    await query.answer()
 

@@ -36,3 +36,4 @@ async def handler_product_button(query: types.CallbackQuery):
         await bot.send_message(query.from_user.id,
                                create_info_product_message(product.name, product.expiration_date, product.bought_date, product.info),
                                reply_markup=ShoppingListProductInfoKeyboard.create(product))
+    await query.answer()

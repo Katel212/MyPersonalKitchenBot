@@ -77,7 +77,9 @@ class Parser:
             steps = []
             step_items = steps_block.find_all("li", class_="clf")
             for step_item in step_items:
-                steps.append(step_item.find("p", class_="instruction").text.strip())
+                step_items_found=step_item.find("p", class_="instruction")
+                if step_items_found:
+                    steps.append(step_items_found.text.strip())
 
         instructions_block = soup.find("div", class_="instructions", itemprop="recipeInstructions")
         instructions = None

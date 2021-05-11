@@ -11,4 +11,4 @@ async def handle_fridge_product_name_state(msg: Message, state: FSMContext):
         data['name'] = msg.text
 
     await FridgeProductState.next()
-    await msg.answer('Введите срок годности продукта (пропустить - /skip)')
+    await msg.answer('Введите срок годности продукта (пропустить - /skip, пропустить остальные шаги /skipall)')

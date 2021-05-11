@@ -12,6 +12,7 @@ class NotificationSettingsListKeyboard(InlineKeyboardMarkup):
                                                           callback_data=f'weekly_notification')
         disable_notifications_completely_button = InlineKeyboardButton('Полное отключение уведомлений',
                                                                        callback_data=f'disable_notifications_completely')
+        back_button = InlineKeyboardButton('<<',callback_data='back_to_settings')
         return InlineKeyboardMarkup(inline_keyboard=[[notification_frequency_button], [time_to_expiration_date_button],
                                                      [weekly_notification_button],
-                                                     [disable_notifications_completely_button]])
+                                                     [disable_notifications_completely_button],[back_button]])
