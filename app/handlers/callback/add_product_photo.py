@@ -34,7 +34,7 @@ async def add_product_photo_check_fridge_handler(query: types.CallbackQuery):
     await FridgeAddPhotoCheckState.name.set()
     await bot.send_message(query.message.chat.id,
                            "Отправьте фото чека в хорошем качестве (без лишних предметов и надписей):")
-    await query.answer()
+    await query.answer('Распознаю продукты...')
 
 
 @dp.callback_query_handler(filters.Text('add_product_photo_check_[\'shopping_list\']'))
@@ -42,7 +42,7 @@ async def add_product_photo_check_shoplist_handler(query: types.CallbackQuery):
     await ShoppingAddPhotoCheckState.name.set()
     await bot.send_message(query.message.chat.id,
                            "Отправьте фото чека в хорошем качестве (без лишних предметов и надписей):")
-    await query.answer()
+    await query.answer('Распознаю продукты...')
 
 
 @dp.callback_query_handler(filters.Text('add_product_photo_[\'fridge\']'))
@@ -50,7 +50,7 @@ async def add_product_photo_fridge_handler(query: types.CallbackQuery):
     await FridgeAddPhotoState.name.set()
     await bot.send_message(query.message.chat.id,
                            "Отправьте фото продукта/этикетки в хорошем качестве (без лишних предметов и надписей):")
-    await query.answer()
+    await query.answer('Распознаю продукт...')
 
 
 @dp.callback_query_handler(filters.Regexp(r'add_product_photo_name_ok_\[\'fridge\']\+.*'))
@@ -59,7 +59,7 @@ async def add_product_photo_fridge_nameok_handler(query: types.CallbackQuery, st
     async with state.proxy() as data:
         data['name'] = name
     await FridgeProductState.expiration_date.set()
-    await bot.send_message(query.message.chat.id, 'Введите срок годности продукта ("дд.мм.гггг", пропустить - /skip)')
+    await bot.send_message(query.message.chat.id, 'Введите срок годности продукта (пропустить - /skip, пропустить остальные шаги /skipall)')
     await query.answer()
 
 
@@ -68,7 +68,7 @@ async def add_product_photo_shoplist_handler(query: types.CallbackQuery):
     await ShoppingAddPhotoState.name.set()
     await bot.send_message(query.message.chat.id,
                            "Отправьте фото продукта/этикетки в хорошем качестве (без лишних предметов и надписей):")
-    await query.answer()
+    await query.answer('Распознаю продукт...')
 
 
 @dp.callback_query_handler(filters.Regexp(r'add_product_photo_name_ok_\[\'shopping_list\']\+.*'))
@@ -77,6 +77,6 @@ async def add_product_photo_shoplist_nameok_handler(query: types.CallbackQuery, 
     async with state.proxy() as data:
         data['name'] = name
     await ShopListProductState.info.set()
-    await bot.send_message(query.message.chat.id, 'Введите дополнительную информацию о продукте ("дд.мм.гггг", пропустить - /skip)')
+    await bot.send_message(query.message.chat.id, 'Введите дополнительную информацию о продукте (пропустить - /skip)')
     await query.answer()
 

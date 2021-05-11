@@ -4,7 +4,6 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 
-from app.misc import bot
 from app.recipe_parser.recipe_models import Recipe, Ingredient, RecipeDetails
 
 
@@ -77,7 +76,7 @@ class Parser:
             steps = []
             step_items = steps_block.find_all("li", class_="clf")
             for step_item in step_items:
-                step_items_found=step_item.find("p", class_="instruction")
+                step_items_found = step_item.find("p", class_="instruction")
                 if step_items_found:
                     steps.append(step_items_found.text.strip())
 
@@ -107,5 +106,5 @@ class ParserHelper:
         product_ids: List[int] = []
         for product in self.products:
             product_ids.append(await self.get_product_id_by_name(product))
-        search_url = f"https://1000.menu/cooking/search?ms=1&str={''.join(['&sostav_arr_add[]=' + str(product_id) for product_id in product_ids])}"
+        search_url = f"https://1000.menu/cooking/search?ms=1&str={''.join(['&sostav_arr_add[]=' + str(product_id) for product_id in product_ids])}&ingtotal=1"
         return search_url
