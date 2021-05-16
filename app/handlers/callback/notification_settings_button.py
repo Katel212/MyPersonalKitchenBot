@@ -161,7 +161,7 @@ async def expiration_date_state(msg: Message, state: FSMContext):
 @dp.message_handler(state=DayOfWeekState.name)
 async def day_of_week_state(msg: Message, state: FSMContext):
     async with state.proxy() as data:
-        if msg.text.isdigit() and int(msg.text) in range(1, 7):
+        if msg.text.isdigit() and int(msg.text) in range(1, 8):
             data['number'] = int(msg.text)
             day = await UserSettings.query.where(UserSettings.user_id == msg.from_user.id).gino.first()
             await day.update(notifications_general_enabled=True).apply()
