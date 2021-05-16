@@ -14,8 +14,8 @@ def recipe_details_helper(rd: RecipeDetails):
     ingredients = ", ".join(map(lambda x: str(x), rd.ingredients))
     if rd.instructions is None:
         steps = '\n'.join(rd.steps)
-        return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления{rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{steps}'
-    return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления{rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{rd.instructions}'
+        return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления {rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{steps}'
+    return f'{rd.name}\n\nКБЖУ: {rd.weight} гр - {rd.PFC}\nВремя приготовления {rd.cooking_time}\n\nДля {rd.portions_count} порций: {ingredients}\n\n{rd.instructions}'
 
 
 @dp.callback_query_handler(filters.Regexp(r'select_recipe_([0-9a-f]{32}\Z)'), state=IngredientsForRecipe.recipes)
