@@ -27,3 +27,6 @@ from .buy_button import buy_product
 from .button_change_page_ingredients import page_callback_handler
 from .calories_handler import calories_filter_handler
 from .calories_keyboard_handler import calories_keyboard_handler
+from .delete_from_shopping_list import delete_confirm_callback_handler
+from .delete_from_shopping_list import delete_yes_callback_handler
+from .delete_from_shopping_list import delete_no_callback_handler
